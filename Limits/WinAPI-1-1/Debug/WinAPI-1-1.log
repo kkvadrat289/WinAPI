@@ -1,0 +1,21 @@
+﻿  WinAPI-1-1.cpp
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(68): warning C4800: BOOL: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: a: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: e: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: p: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: y: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: f: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: q: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: s: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: i: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: h: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: g: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: w: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: t: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: d: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: o: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: u: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(95): warning C4101: r: неиспользованная локальная переменная
+c:\users\julia-win\documents\winapi\winapi-1-1\winapi-1-1\functions.h(97): warning C4717: EmptyFunction: рекурсия на всех путях выполнения, функция вызовет переполнение стека
+  WinAPI-1-1.vcxproj -> C:\Users\Julia-Win\Documents\WinAPI\WinAPI-1-1\Debug\WinAPI-1-1.exe
+  WinAPI-1-1.vcxproj -> C:\Users\Julia-Win\Documents\WinAPI\WinAPI-1-1\Debug\WinAPI-1-1.pdb (Full PDB)
