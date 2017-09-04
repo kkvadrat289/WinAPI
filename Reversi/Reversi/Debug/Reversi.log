@@ -1,0 +1,11 @@
+﻿  GameWindow.cpp
+c:\users\julia-win\documents\winapi\reversi\reversi\gamewindow.cpp(31): warning C4800: ATOM: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+c:\users\julia-win\documents\winapi\reversi\reversi\gamewindow.cpp(50): warning C4800: HWND: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+  Создание кода...
+c:\users\julia-win\documents\winapi\reversi\reversi\gamewindow.cpp(79): warning C4715: CGameWindow::windowProc: значение возвращается не при всех путях выполнения
+  Пропуск... (изменения не обнаружены)
+  Game.cpp
+  Main.cpp
+  BaseWindow.cpp
+  Reversi.vcxproj -> C:\Users\Julia-Win\Documents\WinAPI\Reversi\Debug\Reversi.exe
+  Reversi.vcxproj -> C:\Users\Julia-Win\Documents\WinAPI\Reversi\Debug\Reversi.pdb (Partial PDB)
