@@ -1,6 +1,4 @@
-#include "GameWindow.h"
-
-
+#include "GameWindow.h" 
 
 CGameWindow::CGameWindow()
 {
@@ -66,12 +64,10 @@ LRESULT CALLBACK CGameWindow::windowProc(HWND handle, UINT message, WPARAM wPara
 		break;
 	case WM_LBUTTONDOWN:
 		data = (CGameWindow*)GetWindowLong(handle, GWL_USERDATA);
-		//data->draw = true;
 		data->OnMouseClick(lParam);
 		break;
 	case WM_LBUTTONUP:
 		data = (CGameWindow*)GetWindowLong(handle, GWL_USERDATA);
-		//data->draw = false;
 		break;
 	default:
 		return DefWindowProc(handle, message, wParam, lParam);
@@ -84,17 +80,17 @@ void CGameWindow::OnMouseClick(LPARAM lParam) {
 	bool res = game.ChangeState(xPos, yPos, color);
 	if (res) {
 		color = -1 * color;
-	}
-	else if (game.End) {
-		if (game.blackScore > game.whiteScore)
-			MessageBox(handle, L"Black wins!", L"THE END", MB_ICONERROR);
-		else if (game.blackScore < game.whiteScore)
-			MessageBox(handle, L"White wins!", L"THE END", MB_ICONERROR);
-		else
-			MessageBox(handle, L"Draw!", L"THE END", MB_ICONERROR);
+		game.ChangeScore(scoreHandle);
 	}
 	game.UpdateAvailablePositions(color);
-
+	if (game.End) {
+		if (game.blackScore > game.whiteScore)
+			MessageBox(handle, L"Black wins!", L"THE END", MB_OK);
+		else if (game.blackScore < game.whiteScore)
+			MessageBox(handle, L"White wins!", L"THE END", MB_OK);
+		else
+			MessageBox(handle, L"Draw!", L"THE END", MB_OK);
+	}
 	InvalidateRect(handle, &(baseRect), false);
 }
 
@@ -103,24 +99,21 @@ void CGameWindow::OnPaint() {
 	game.SetHDC(ps.hdc);
 	GetClientRect(handle, &(baseRect));
 	brush = static_cast<HBRUSH>(GetStockObject(DC_BRUSH));
-	if (scene != true) {
+	SelectObject(ps.hdc, brush);
+	SetDCBrushColor(ps.hdc, RGB(150, 150, 150));
+	//SetDCBrushColor(ps.hdc, RGB(243, 177, 142));
+	FillRect(ps.hdc, &(baseRect), brush);
+	int i = 0;
+	RECT border;
+	for (; i < 7; i++) {
+		SetRect(&border, 0, (i + 1) * CELL_SIZE + i * 2, baseRect.right, (i + 1)*CELL_SIZE + i * 2 + 2);
+		SetDCBrushColor(ps.hdc, RGB(100, 100, 100));
+		//SetDCBrushColor(ps.hdc, RGB(211, 145, 102));
 		SelectObject(ps.hdc, brush);
-		SetDCBrushColor(ps.hdc, RGB(150, 150, 150));
-		FillRect(ps.hdc, &(baseRect), brush);
-		int i = 0;
-		RECT border;
-		int cellSize = 70;
-		for (; i < 7; i++) {
-			SetRect(&border, 0, (i + 1) * cellSize + i * 2, baseRect.right, (i + 1)*cellSize + i * 2 + 2);
-			SetDCBrushColor(ps.hdc, RGB(100, 100, 100));
-			SelectObject(ps.hdc, brush);
-			FillRect(ps.hdc, &border, brush);
-
-			SetRect(&border, (i + 1) * cellSize + i * 2, 0, (i + 1) * cellSize + (i + 1) * 2, baseRect.bottom);
-			SelectObject(ps.hdc, brush);
-			FillRect(ps.hdc, &border, brush);
-		}
-		scene = true;
+		FillRect(ps.hdc, &border, brush);
+		SetRect(&border, (i + 1) * CELL_SIZE + i * 2, 0, (i + 1) * CELL_SIZE + (i + 1) * 2, baseRect.bottom);
+		SelectObject(ps.hdc, brush);
+		FillRect(ps.hdc, &border, brush);
 	}
 	for (int i = 0; i < 64; i++) {
 		if (game.availablePositions[i].GetColor() != -1 * color)

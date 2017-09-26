@@ -12,18 +12,19 @@ CGame::~CGame()
 }
 
 void CGame::InitGame() {
-	offsets[1] = -8;
-	offsets[2] = -7;
-	offsets[3] = 1;
-	offsets[4] = 9;
-	offsets[5] = 8;
-	offsets[6] = 7;
-	offsets[7] = -1;
-	offsets[8] = -9;
+	offsets[1] = -8; //сдвиг по клеткам дл€ шага вверх
+	offsets[2] = -7; //вправо-вверх
+	offsets[3] = 1;	 //вправо
+	offsets[4] = 9;  //вправо-вниз
+	offsets[5] = 8;	 //вниз
+	offsets[6] = 7;	 //влево-вниз
+	offsets[7] = -1; //влево
+	offsets[8] = -9; //влево-вверх
 	for (int i = 0; i < 64; i++) {
 		gameState[i] = CFigure(0, i);
 		availablePositions[i] = CFigure(0, i);
 	}
+	// задание начального положени€ на доске
 	gameState[27].ChangeColor(1);
 	gameState[36].ChangeColor(1);
 	gameState[28].ChangeColor(-1);
@@ -31,7 +32,7 @@ void CGame::InitGame() {
 	for (int i = 0; i < 64; i++) {
 		if (gameState[i].GetColor() == 0)
 			updateBorder(i);
-	}
+	}		
 	color = -1;
 	blackScore = 2;
 	whiteScore = 2;
@@ -42,13 +43,17 @@ void CGame::SetHDC(HDC _hdc) {
 	hdc = _hdc;
 }
 
+//вызываетс€ после каждого клика, обновл€ет положение на доске
 bool CGame::ChangeState(int xPos, int yPos, int color) {
 	this->color = color;
 	int cellNum = findPosition(xPos, yPos);
 	if (countAvailable() == 0)
 		return false;
-	if (countAvailable() == -1)
+	if (countAvailable() == -1) {
 		End = true;
+		return false;
+	}
+		
 	if (availablePositions[cellNum].GetColor() == 0) 
 		return false;
 	gameState[cellNum].ChangeColor(color);
@@ -80,6 +85,7 @@ int CGame::findPosition(int xPos, int yPos) {
 	int pos = 8 * wPosition + hPosition;
 	return 8 * wPosition + hPosition;
 }
+
 
 void CGame::UpdateAvailablePositions(int color) {
 	int current;
@@ -117,25 +123,19 @@ void CGame::UpdateAvailablePositions(int color) {
 	}
 }
 
+//обновл€ет граничные позиции (первый этап проверки, куда можно ставить фишки)
+//»з граничных позиций в двльнейшем выбираютс€ доступные позиции
 void CGame::updateBorder(int cellNum) {
 	if (
 		(gameState[cellNum].GetColor() == 0) &&
-		//левый край
-		((cellNum % 8 != 0 && gameState[cellNum - 1].GetColor() != 0) ||
-		//правый край
-		((cellNum + 1) % 8 != 0 && gameState[cellNum + 1].GetColor() != 0) ||
-	    //верхний край
-		(cellNum >= 8 && gameState[cellNum - 8].GetColor() != 0) ||
-		//нижний край
-		(cellNum <= 55 && gameState[cellNum + 8].GetColor() != 0) ||
-		//влево вниз
-		(cellNum % 8 != 0 && cellNum <= 55 && gameState[cellNum + 7].GetColor() != 0) ||
-		//вправо вниз
-		((cellNum + 1) % 8 != 0 && cellNum <= 55 && gameState[cellNum + 9].GetColor() != 0) ||
-		//влево вверх
-		(cellNum % 8 != 0 && cellNum >= 8 && gameState[cellNum - 9].GetColor() != 0) ||
-		//вправо вверх
-		((cellNum + 1) % 8 != 0 && cellNum >= 8 && gameState[cellNum - 7].GetColor() != 0)
+		((cellNum % 8 != 0 && gameState[cellNum - 1].GetColor() != 0) ||						//левый край
+		((cellNum + 1) % 8 != 0 && gameState[cellNum + 1].GetColor() != 0) ||					//правый край
+		(cellNum >= 8 && gameState[cellNum - 8].GetColor() != 0) ||								//верхний край
+		(cellNum <= 55 && gameState[cellNum + 8].GetColor() != 0) ||							//нижний край
+		(cellNum % 8 != 0 && cellNum <= 55 && gameState[cellNum + 7].GetColor() != 0) ||		//влево вниз
+		((cellNum + 1) % 8 != 0 && cellNum <= 55 && gameState[cellNum + 9].GetColor() != 0) ||	//вправо вниз
+		(cellNum % 8 != 0 && cellNum >= 8 && gameState[cellNum - 9].GetColor() != 0) ||			//влево вверх
+		((cellNum + 1) % 8 != 0 && cellNum >= 8 && gameState[cellNum - 7].GetColor() != 0)		//вправо вверх
 	)	) {
 		gameState[cellNum].Border = true;
 	}
@@ -144,6 +144,10 @@ void CGame::updateBorder(int cellNum) {
 		gameState[cellNum].Border = false;
 	}	
 }
+				   
+
+//дальше куча методов, которые провер€ют все 8 направлений дл€ позиции cellNum и ищут цепочки 
+//фишек вражеского цвета, которые можно съесть
 
 bool CGame::checkUp(int cellNum) {
 	int current = cellNum - 8;
@@ -234,6 +238,7 @@ bool CGame::checkUpLeft(int cellNum) {
 	return false;
 }
 
+//мен€ет цвет фишек при съедании противником
 void CGame::rotate(int cellNum) {
 	for (int i = 1; i < 9; i++) {
 		if (availablePositions[cellNum].GetDirection(i)) {
@@ -255,6 +260,7 @@ void CGame::rotate(int cellNum) {
 	}
 }
 
+//считает доступные позиции, если тут ноль, то игра заканчиваетс€
 int CGame::countAvailable() {
 	int count = 0;
 	for (int i = 0; i < 64; i++)
@@ -268,4 +274,10 @@ int CGame::countAvailable() {
 			return -1;
 	}
 	return count;
+}
+
+//отправл€ет счЄт в ScoreWindow
+void CGame::ChangeScore(HWND handle) {
+	SendMessage(handle, WM_USER, NULL, (LPARAM)(&whiteScore));
+	SendMessage(handle, WM_USER + 1, NULL, (LPARAM)(&blackScore));
 }

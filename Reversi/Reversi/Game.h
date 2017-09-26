@@ -16,6 +16,7 @@ public:
 	bool End;
 	int blackScore;
 	int whiteScore;
+	void ChangeScore(HWND handle);
 private:
 	bool directions[9];
 	int offsets[9];

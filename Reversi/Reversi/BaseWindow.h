@@ -22,8 +22,6 @@ private:
 	PAINTSTRUCT ps;
 	CGameWindow gameWindow;
 	CScoreWindow scoreWindow;
-	int cellSize;
-	int numOfCells;
 
 	static LRESULT CALLBACK windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 };

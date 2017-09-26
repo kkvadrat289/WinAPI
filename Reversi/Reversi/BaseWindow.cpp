@@ -1,6 +1,8 @@
 #include "BaseWindow.h"
-#define NUM_OF_CHILDREN 4
-
+#define CELL_SIZE 70
+#define NUM_OF_CELLS 8
+#define HEAD_SIZE 49
+//Main window. Inclides Game and Score windows
 
 CBaseWindow::CBaseWindow()
 {
@@ -31,11 +33,9 @@ bool CBaseWindow::RegisterClass() {
 }
 
 bool CBaseWindow::Create() {
-	cellSize = 70;
-	numOfCells = 8;
-	int windowSize = cellSize * numOfCells + 2 * (numOfCells - 1) + 49;
+	int windowSize = CELL_SIZE * NUM_OF_CELLS + 2 * (NUM_OF_CELLS - 1) + HEAD_SIZE;
 	int scoreSize = 150; 
-	this->handle = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MainWClass", L"Reversi", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+	this->handle = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MainWClass", L"Reversi", WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT,
 		windowSize + scoreSize, windowSize, HWND(NULL), HMENU(NULL), GetModuleHandle(NULL), LPVOID(this));
 	if (!this->handle) {
 		wchar_t* error;
@@ -77,7 +77,6 @@ void CBaseWindow::Show(int cmdShow) {
 BOOL CALLBACK EnumChildProc(HWND hwndChild, LPARAM lParam) {
 	LPRECT parentRect;
 	int i;
-	int idChild;
 	i = GetWindowLong(hwndChild, GWL_ID);
 	parentRect = (LPRECT)lParam;
 	int x, y, weight, heigh;
@@ -101,10 +100,6 @@ BOOL CALLBACK EnumChildProc(HWND hwndChild, LPARAM lParam) {
 LRESULT CALLBACK CBaseWindow::windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam) {
 	CBaseWindow* data = (CBaseWindow*)lParam;
 	RECT baseRect;
-	HBRUSH brush;
-	RECT circle;
-	int xPos;
-	int yPos;
 	switch (message) {
 	case WM_SIZE:
 		GetClientRect(handle, &baseRect);

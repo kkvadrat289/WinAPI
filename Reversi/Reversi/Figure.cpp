@@ -1,7 +1,5 @@
 #include "Figure.h"
-
-
-
+  
 CFigure::CFigure()
 {
 }
@@ -27,13 +25,16 @@ CFigure::~CFigure()
 {
 }
 
+//Сама фишка. В клетке рисуется кружок
 void CFigure::DrawCircle(HDC hdc) {
 	COLORREF colorRGB;
 	if (color == -1) {
 		colorRGB = RGB(10, 10, 10);
+		//colorRGB = RGB(46, 16, 0);
 	}
 	else if (color == 1) {
 		colorRGB = RGB(250, 250, 250);
+		//colorRGB = RGB(231, 210, 181);
 	}
 	else {
 		return;
@@ -47,16 +48,20 @@ void CFigure::DrawCircle(HDC hdc) {
 	Ellipse(hdc, circle.left, circle.top, circle.right, circle.bottom);
 }
 
+//закрашивание клетки - для визуализации возможных ходов
 void CFigure::DrawSquare(HDC hdc) {
 	COLORREF colorRGB;
 	if (color == 0) {
 		colorRGB = RGB(150, 150, 150);
+		//colorRGB = RGB(243, 177, 142);
 	}
 	else if (color == -1){
 		colorRGB = RGB(120, 120, 120);
+		//colorRGB = RGB(118, 69, 39);
 	}
 	else {
 		colorRGB = RGB(180, 180, 180);
+		//colorRGB = RGB(205, 179, 135);
 	}
 	RECT square;
 	HBRUSH brush;
@@ -67,10 +72,12 @@ void CFigure::DrawSquare(HDC hdc) {
 	FillRect(hdc, &square, brush);
 }
 
+//для отладки - закрашивает клетки, граничащие с уже стоящими фишками
 void CFigure::DrawBorder(HDC hdc) {
 	COLORREF colorRGB;
 	if (Border == false) {
-		colorRGB = RGB(150, 150, 150);
+		//colorRGB = RGB(150, 150, 150);
+		colorRGB = RGB(114, 117, 167);
 	}
 	else {
 		colorRGB = RGB(100, 120, 120);		
@@ -93,6 +100,7 @@ void CFigure::ChangeColor(int newColor) {
 	color = newColor;
 }
 
+//по координатам курсора определяет, в какую клетку нужно рисовать
 int CFigure::findPosition(int xPos, int yPos) {
 	int hPosition, wPosition;
 	for (int i = 0; i < 8; i++) {
@@ -108,7 +116,7 @@ int CFigure::findPosition(int xPos, int yPos) {
 	int pos = 8 * wPosition + hPosition;
 	return 8 * wPosition + hPosition;
 }
-
+							 
 int CFigure::calculateXPos(int numOfCell) {
 	return 35 + 72 * (numOfCell % 8);
 }

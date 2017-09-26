@@ -4,6 +4,10 @@
 #include <string>
 #include "Game.h"
 
+#define CELL_SIZE 70
+#define NUM_OF_CELLS 8
+#define HEAD_SIZE 49
+
 class CGameWindow
 {
 public:
