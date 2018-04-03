@@ -1,16 +1,22 @@
 #pragma once
 #include <vector>
 #include <unordered_map>
+#include <wchar.h>
+#include <fstream>
+#include <string>
+
 
 struct Node {
+	Node();
+
 	std::unordered_map<wchar_t, Node*> children;
 	std::unordered_map<wchar_t, Node*> go;
 	Node* parent;
-	Node* suffixLinc;
+	Node* suffixLink;
 	Node* up;
 	wchar_t charToParent;
 	bool isLeaf;
-	std::vector<int> patternNumber;
+	size_t patternNumber;
 };
 
 
@@ -19,16 +25,19 @@ public:
 	Trie();
 	~Trie();
 
-	void processText(wchar_t* text);
-
+	void processText(wchar_t* fileName);
+	void addPatterns(wchar_t* fileName);
 private:
 	int numberOfPatterns;
 	Node* root;
+	std::vector<std::wstring> patterns;
+	std::vector<std::pair<size_t, size_t> > positions;
 
-	Node* getSuffixLinc(Node* vertex);
+	Node* getSuffixLink(Node* vertex);
 	Node* getLink(Node* vertex, wchar_t symbol);
 	Node* getUp(Node* vertex);
-	void addPattern(wchar_t* string);
+	void addPattern(std::wstring string);
+	void clearText(wchar_t* fileName);
 
 };
 
